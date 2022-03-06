@@ -22,6 +22,9 @@ class ImageInfo {
 
   render() {
     if (this.data.visible) {
+      if(!this.data.image){
+        return;
+      }
       const { name, url, temperament, origin } = this.data.image;
       console.log("name == " + name + " , url == " + url + ", temperament == " + temperament + " , origin == " + origin)
       

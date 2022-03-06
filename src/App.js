@@ -17,18 +17,20 @@ class App {
     });
 
     this.modeSwitch = new ModeSwitch($target);
-    
-    this.searchHistory = new SearchHistory({
-      $target
-    })
-
     this.searchInput = new SearchInput({
       $target,
       onSearch: keyword => {
         this.searchHistory.addKeyword(keyword);
+        if(!keyword){
+          alert("검색어를 입력해주세요.")
+          return;
+        }
+
         this.progressBar.setVisibility(true);
         api.fetchCats(keyword).then(({ data }) => {
           this.progressBar.setVisibility(false);
+         
+          
           if(data.length > 0) {
             this.setState(data)
           }else{
@@ -38,7 +40,9 @@ class App {
         )}
     });
 
-  
+    this.searchHistory = new SearchHistory({
+      $target
+    })
 
     this.searchResult = new SearchResult({
       $target,
