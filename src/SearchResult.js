@@ -24,7 +24,7 @@ class SearchResult {
       .map(
         cat => `
           <card class="item">
-            <img src=${cat.url} alt=${cat.name} />
+            <img src=${cat.url} alt=${cat.name} title="${cat.name}" style="cursor:pointer;"/>
           </card>
         `
       )
