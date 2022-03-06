@@ -24,16 +24,39 @@ class SearchResult {
       .map(
         cat => `
           <card class="item">
-            <img src=${cat.url} alt=${cat.name} title="${cat.name}" style="cursor:pointer;"/>
+            <img src="" data-src=${cat.url} alt=${cat.name} title="${cat.name}" style="cursor:pointer;"/>
           </card>
         `
       )
       .join("");
 
     this.$searchResult.querySelectorAll(".item").forEach(($item, index) => {
+    this.setLazyLoading($item.querySelector("img"));
       $item.addEventListener("click", () => {
         this.onClick(this.data[index]);
       });
     });
+  }
+
+  setLazyLoading(target){
+    
+    const options = {
+      threshold: 0
+    }
+
+    const observer = new IntersectionObserver((elements) => {
+      elements.forEach((element) => {
+        if(element.isIntersecting){
+          let lazyImage = element.target;
+          
+          lazyImage.src = lazyImage.dataset.srcset;
+          lazyImage.srcset = lazyImage.dataset.src;
+          // lazyImage.classList.remove("lazy");
+          observer.unobserve(lazyImage);
+        }
+      });
+    }, options);
+
+    observer.observe(target);
   }
 }
