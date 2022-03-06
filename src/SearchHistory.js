@@ -1,6 +1,7 @@
 class SearchHistory {
-    constructor({$target}){
+    constructor({$target, onClick}){
         this.$target = $target;
+        this.onClick = onClick;
         this.KEYWORD_PREFIX = "keyword"
         this.keywordList = [];
         const $searchHistory = document.createElement("ul")
@@ -25,6 +26,13 @@ class SearchHistory {
         const keywordTag = document.createElement("li");
         keywordTag.className= this.KEYWORD_PREFIX;
         keywordTag.innerHTML = keyword;
+        
+        //눌렀을 때, 검색되게 이벤트 추가.
+        keywordTag.addEventListener("click",(event) => {
+            console.dir(event);
+            this.onClick(event.target.innerHTML);
+        })
+
         this.$searchHistory.appendChild(keywordTag);
           
     }

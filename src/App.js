@@ -19,29 +19,12 @@ class App {
     this.modeSwitch = new ModeSwitch($target);
     this.searchInput = new SearchInput({
       $target,
-      onSearch: keyword => {
-        this.searchHistory.addKeyword(keyword);
-        if(!keyword){
-          alert("검색어를 입력해주세요.")
-          return;
-        }
-
-        this.progressBar.setVisibility(true);
-        api.fetchCats(keyword).then(({ data }) => {
-          this.progressBar.setVisibility(false);
-         
-          
-          if(data.length > 0) {
-            this.setState(data)
-          }else{
-              alert("검색 결과가 없습니다!")
-            }
-          }
-        )}
+      onSearch: keyword => this.search(keyword)
     });
 
     this.searchHistory = new SearchHistory({
-      $target
+      $target,
+      onClick: (keyword) => this.search(keyword)
     })
 
     this.searchResult = new SearchResult({
@@ -88,5 +71,27 @@ class App {
     console.log(this);
     this.data = nextData;
     this.searchResult.setState(nextData);
+  }
+
+  //검색
+  search(keyword){
+    this.searchHistory.addKeyword(keyword);
+    if(!keyword){
+      alert("검색어를 입력해주세요.")
+      return;
+    }
+
+    this.progressBar.setVisibility(true);
+    api.fetchCats(keyword).then(({ data }) => {
+      this.progressBar.setVisibility(false);
+     
+      
+      if(data.length > 0) {
+        this.setState(data)
+      }else{
+          alert("검색 결과가 없습니다!")
+        }
+      }
+    )
   }
 }
